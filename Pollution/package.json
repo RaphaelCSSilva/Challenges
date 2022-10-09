@@ -1,0 +1,30 @@
+{
+  "name": "pollution-awareness",
+  "version": "1.0.0",
+  "description": "Pollution Awareness",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "Raphael Silva",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.1.2",
+    "body-parser": "^1.20.1",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-autosanitizer": "^1.0.2",
+    "express-sanitizer": "^1.0.6",
+    "express-validator": "^6.14.2",
+    "jsonwebtoken": "^8.5.1",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
