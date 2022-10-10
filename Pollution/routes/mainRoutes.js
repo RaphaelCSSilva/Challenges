@@ -1,47 +1,40 @@
 const router = require('express').Router();
 const path = require("path");
+const express = require("express");
+const jwt = require("jsonwebtoken");
+require('dotenv').config()
+const {isLoggedIn} = require("../middleware/isLoggedIn");
 
+/************************************************************************* Helper Functions, don't feel like doing a controller for this challenge...  ***********************************************************************************/
+
+function generateAccessToken(user) {
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '24h' })
+}
 
 /************************************************************************* Home Route  ***********************************************************************************/
 
-router.get('/', (req,res) => {
-    res.sendFile(express.static(path.join(__dirname, '../public/')));
-});
+router.get('/', (req, res) => {
+    console.log("Heyeyeyey")
+    res.sendFile(path.join(__dirname, "../public"))
+})
 
-/************************************************************************* Admin Route  ***********************************************************************************/
+router.get('/admin/', isLoggedIn, (req, res) => {
+    res.sendFile(path.join(__dirname, "../admin/index.html"))
+})
 
-router.get('/admin', (req,res) => {
+router.get('/admin/index.html', isLoggedIn, (req, res) => {
+    res.sendFile(path.join(__dirname, "../admin/index.html"))
+})
 
-    const authHeader = req.headers.authorization;
+router.get('/admin/products.html', isLoggedIn, (req, res) => {
+    res.sendFile(path.join(__dirname, "../admin/products.html"))
+})
 
-    var userInfo;
+router.post('/admin', (req, res) => {
 
-    if (authHeader) {
+    // Not through here...
+    res.send("Wrong Username or Password");
 
-        userInfo = JSON.parse(Buffer.from(authHeader.split(".")[1], "base64").toString("binary"));
-        
-        console.log("Teste: " + userInfo);
-
-
-    }
-
-
-    // if () {
-
-    // }
-
-    res.sendFile(path.join(__dirname, '../public/admin/login.html'));
-
-});
-
-/************************************************************************* API Calendar Routes  ***********************************************************************************/
-
-// const calendar = require("../controllers/calendar.controller.js");
-
-// router.get("/api/v1/calendar", isAuthenticated, isAdmin, calendar.getAllEvents);
-// router.get("/api/v1/calendar/:meetingId", isAuthenticated, calendar.getOneEvents);
-// router.put("/api/v1/calendar/:meetingId", isAuthenticated, isStaff, calendar.update);
-
-
+})
 
 module.exports = router;
