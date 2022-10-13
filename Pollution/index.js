@@ -24,9 +24,12 @@ app.use(bodyParser.json(), bodyParser.urlencoded({ extended: true }));
 app.use(expressSanitizer());
 
 // Set up routes
+// app.enable('strict routing');
 app.use("/", router);
 app.use(express.static(path.join(__dirname, './public')));
-app.use("/admin", express.static(path.join(__dirname, './admin')))
+// app.all('/admin', isLoggedIn, function(req, res) { res.redirect('/admin/'); });
+app.all(/^\/admin$/, function(req, res) { res.redirect('/admin/'); });
+app.use("/admin/", isLoggedIn, express.static(path.join(__dirname, './admin')))
 
 // Start Server
 app.listen(PORT, () => {
