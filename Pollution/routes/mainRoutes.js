@@ -30,12 +30,30 @@ const merge = (obj1, obj2) => {
 };
 
 class cmd {
-    constructor(host) {
-        this.host = host;
+
+    SAFE_HOSTS = ["localhost", "127.0.0.1"];
+
+    constructor(logLevel) {
+        if (!this.SAFE_HOSTS.includes(host)) {
+            this.host = host;
+        }
+        this.host = "localhost";
+        this.logLevel = logLevel;
     }
 
     getHost() {
         return this.host;
+    }
+
+    logCmd() {
+
+        // TODO: Implement different log levels...
+        switch (log) {
+            case 1:
+                console.log("Checked connectivity at " + Date.now());
+
+        }
+
     }
 }
 
@@ -72,14 +90,16 @@ router.get("/speakers", (req, res) => {
 })
 
 router.post("/checkConnectivity", isLoggedIn, (req, res) => {
-    // console.log("req.body: " + JSON.stringify(req.body))
-    let obj = new cmd();
+    console.log("req.body: " + JSON.stringify(req.body))
+    let obj = {};
     let body = merge(obj, req.body);
-    console.log("req.body.toString: " + req.body.host.toString())
-    console.log("body: " + body.host)
-    console.log("proto test: " + body.toString)
-    console.log("obj: " + obj.__proto__.getHost)
-    exec(`ping -n 1 ${req.body.host.toString()}`, (error, stdout, stderr) => {
+    let cmd = new cmd();
+    console.log("req.body.__proto__: " + req.body.__proto__)
+    console.log("body.host: " + body.host)
+    console.log("body.test: " + body.test)
+    console.log("obj.__proto__.host: " + cmd.__proto__.host)
+    console.log("obj.host: " + cmd.host)
+    exec(`ping -n 1 ${obj.getHost()}`, (error, stdout, stderr) => {
         if (error) {
             console.log(`error: ${error.message}`);
             return;
